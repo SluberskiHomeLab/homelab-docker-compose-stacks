@@ -1,0 +1,99 @@
+version: "2.1"
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /path/to/data:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /etc/sabnzbd:/config
+      - /etc/media/successful:/Downloads/complete
+      - /etc/media/unsuccessful:/Downloads/incomplete
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /etc/radarr:/config
+      - /etc/media/successful:/Downloads/complete
+      - /etc/media/movies:/Downloads/Movies
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /etc/sonarr:/config
+      - /etc/media/successful:/Downloads/complete
+      - /etc/media/tvshows:/Downloads/tvshows
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /path/to/overseerr/config:/config
+      - /etc/media/successful:/Downloads/complete
+      - /etc/media/movies:/Downloads/Movies
+      - /etc/media/tvshows:/Downloads/tvshows
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+  doplarr:
+    image: lscr.io/linuxserver/doplarr:latest
+    container_name: doplarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - DISCORD__TOKEN=<insert discord bot token here>
+      - OVERSEERR__API=<add overseer api here>
+      - OVERSEERR__URL=http://10.10.0.4:5055
+      - RADARR__API=
+      - RADARR__URL=
+      - SONARR__API=
+      - SONARR__URL=
+    #  - DISCORD__MAX_RESULTS=25 #optional
+     # - DISCORD__REQUESTED_MSG_STYLE=:plain #optional
+     # - SONARR__QUALITY_PROFILE= #optional
+     # - RADARR__QUALITY_PROFILE= #optional
+     # - SONARR__ROOTFOLDER= #optional
+    #  - RADARR__ROOTFOLDER= #optional
+     # - SONARR__LANGUAGE_PROFILE= #optional
+     # - OVERSEERR__DEFAULT_ID= #optional
+      #- PARTIAL_SEASONS=true #optional
+      #- LOG_LEVEL=:info #optional
+      #- JAVA_OPTS= #optional
+    volumes:
+      - /path/to/doplarr/config:/config
+    restart: unless-stopped
