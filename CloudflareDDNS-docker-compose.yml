@@ -1,0 +1,11 @@
+version: '2'
+services:
+  cloudflare-ddns:
+    image: oznu/cloudflare-ddns:latest
+    restart: always
+    environment:
+      - API_KEY=Hk9O2OLFaLhUeiaR6tNb6mE9mRJlo811x3CR5uXi
+      - ZONE=matthewsluberski.com
+      - PROXIED=false
+      # - PUID=
+      # - PGID=
